@@ -50,9 +50,9 @@ def zigzag_map():
             pixnum += rows+1
     return pixel_map
 
+# Input a value 0 to 255 to get a color value.
+# The colours are a transition r - g - b - back to r.
 def wheel(pos):
-    # Input a value 0 to 255 to get a color value.
-    # The colours are a transition r - g - b - back to r.
     if pos < 0 or pos > 255:
         r = g = b = 0
     elif pos < 85:
@@ -76,6 +76,14 @@ def rainbow_cycle(wait):
         for i in range(num_pixels):
             pixel_index = (i * 256 // num_pixels) + j
             pixels[i] = wheel(pixel_index & 255)
+        pixels.show()
+        time.sleep(wait)
+
+# fills pixels columns by column with specified color
+def color_wipe(pixel_map, wait, red, green, blue):
+    for i in range(len(pixel_map[0])):
+        for r in range(len(pixel_map)):
+            pixels[pixel_map[r][i]] = (red,green,blue)
         pixels.show()
         time.sleep(wait)
 
