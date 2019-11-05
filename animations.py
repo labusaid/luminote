@@ -2,6 +2,7 @@
 import time
 import board
 import neopixel
+from PIL import Image
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
@@ -9,6 +10,9 @@ pixel_pin = board.D18
 
 # The number of NeoPixels
 num_pixels = 256
+# Grid layout
+rows = 8
+columns = 32
 
 # The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
 # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
@@ -18,7 +22,7 @@ pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=.05, auto_write=Fal
 
 # Pixel mapping for addressing using a 2d array
 # Direct matrix map generation
-def direct_map(rows, columns):
+def direct_map():
     pixel_map = [[0 for x in range(columns)] for y in range(rows)]
     pixnum = 0
     for r in range(rows):
@@ -28,7 +32,7 @@ def direct_map(rows, columns):
     return pixel_map
 
 # Vertical zig zag map generation
-def zigzag_map(rows, columns):
+def zigzag_map():
     pixel_map = [[0 for x in range(columns)] for y in range(rows)]
     pixnum = 0
     for c in range(columns):
@@ -79,6 +83,12 @@ def clear_pixels():
     pixels.fill((0,0,0))
     pixels.show()
 
+def load_frame(pixel_map, image, frame_number):
+    img = Image.open(image)  # Can be many different formats.
+    pic = img.load()
+    for r in range(rows):
+        for c in range(columns):
+            pixels[pixel_map[r][c]] = pic[c][r]
+
 # Main
-rainbow_cycle(.0000001)
 clear_pixels()
