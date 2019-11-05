@@ -87,16 +87,23 @@ def color_wipe(pixel_map, wait, red, green, blue):
         pixels.show()
         time.sleep(wait)
 
+# clears all pixels
 def clear_pixels():
     pixels.fill((0,0,0))
     pixels.show()
 
-def load_frame(pixel_map, image, frame_number):
+# loads still image into pixel memory, requires pixels.show() to display
+def load_image(pixel_map, image):
     img = Image.open(image)  # Can be many different formats.
     pic = img.load()
+    # Writes each pixel to mapped pixels
     for r in range(rows):
         for c in range(columns):
-            pixels[pixel_map[r][c]] = pic[c][r]
+            pixels[pixel_map[r][c]] = pic[c, r]
 
 # Main
+test_map = zigzag_map()
+load_image(test_map, 'img/sans.png', 0)
+pixels.show()
+time.sleep(30)
 clear_pixels()
