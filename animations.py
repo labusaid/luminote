@@ -92,18 +92,23 @@ def clear_pixels():
     pixels.fill((0,0,0))
     pixels.show()
 
-# loads still image into pixel memory, requires pixels.show() to display
-def load_image(pixel_map, image):
+# loads still frame into pixel memory, requires pixels.show() to display
+def load_frame(pixel_map, image, frame_number = 0):
     img = Image.open(image)  # Can be many different formats.
     pic = img.load()
     # Writes each pixel to mapped pixels
     for r in range(rows):
         for c in range(columns):
-            pixels[pixel_map[r][c]] = pic[c, r]
+            pixels[pixel_map[r][c]] = pic[c, (r + frame_number*rows)]
+
+# load and display a frame for set amount of time
+def play_frame(pixel_map, image, frame_number, wait):
+    load_frame(pixel_map, image, frame_number)
+    pixels.show()
+    time.sleep(wait)
 
 # Main
 test_map = zigzag_map()
-load_image(test_map, 'img/sans.png', 0)
-pixels.show()
-time.sleep(30)
+# while True:
+
 clear_pixels()
