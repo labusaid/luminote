@@ -1,18 +1,18 @@
 # Functions for organization and animation of NeoPixels
+import config
 import time
 import board
 import neopixel
-from PIL import Image, ImageFont, ImageDraw
+from PIL import Image
+
+# Copy settings from config.py
+num_pixels = config.num_pixels
+rows = config.rows
+columns = config.columns
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
 pixel_pin = board.D18
-
-# The number of NeoPixels
-num_pixels = 256
-# Grid layout
-rows = 8
-columns = 32
 
 # The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
 # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
@@ -112,9 +112,3 @@ def draw_frame(pixel_map, source, frame_number):
         for c in range(columns):
             if not (pic[c, (r + frame_number*rows)] == (0,0,0)):
                 pixels[pixel_map[r][c]] = pic[c, (r + frame_number*rows)]
-
-# draws text to specified, defaults to a new image
-def draw_text(text, image = Image.new('RGB',(columns,rows))):
-    draw = ImageDraw.Draw(image)
-    font = ImageFont.load('resources/Pixeled.tff')
-    return image
