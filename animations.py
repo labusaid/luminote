@@ -2,7 +2,7 @@
 import time
 import board
 import neopixel
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
@@ -92,23 +92,29 @@ def clear_pixels():
     pixels.fill((0,0,0))
     pixels.show()
 
-# loads still frame into pixel memory, requires pixels.show() to display
-def load_frame(pixel_map, image, frame_number = 0):
-    img = Image.open(image)  # Can be many different formats.
+# load and display a frame for set amount of time
+def play_frame(pixel_map, source, frame_number, wait):
+    img = Image.open(source)  # Can be many different formats.
     pic = img.load()
     # Writes each pixel to mapped pixels
     for r in range(rows):
         for c in range(columns):
             pixels[pixel_map[r][c]] = pic[c, (r + frame_number*rows)]
-
-# load and display a frame for set amount of time
-def play_frame(pixel_map, image, frame_number, wait):
-    load_frame(pixel_map, image, frame_number)
     pixels.show()
     time.sleep(wait)
 
-# Main
-test_map = zigzag_map()
-# while True:
+# draws frame ignoring black pixels, requires pixels.show() to display
+def draw_frame(pixel_map, source, frame_number):
+    img = Image.open(source)  # Can be many different formats.
+    pic = img.load()
+    # Writes each pixel to mapped pixels
+    for r in range(rows):
+        for c in range(columns):
+            if not (pic[c, (r + frame_number*rows)] == (0,0,0)):
+                pixels[pixel_map[r][c]] = pic[c, (r + frame_number*rows)]
 
-clear_pixels()
+# draws text to specified, defaults to a new image
+def draw_text(text, image = Image.new('RGB',(columns,rows))):
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.load('resources/Pixeled.tff')
+    return image
