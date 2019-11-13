@@ -1,4 +1,5 @@
 # Functions for organization and animation of NeoPixels
+# Most code in this file is only designed to be run natively on a raspberry pi or other control device.
 import config
 import time
 import board
