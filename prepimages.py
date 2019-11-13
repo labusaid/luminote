@@ -15,23 +15,41 @@ def format(image):
     print('prepping ' + image + ' for use with RGB leds')
     print('Detected resolution: ' + pic.size())
 
-# draws text over a specified image, defaults to a new image with text starting in the top left
+# Draws text over a specified image, defaults to a new image with text starting in the top left
 def draw_text(text, image = Image.new('RGB',(columns,rows)), location=(0,0)):
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype('resources/visitor1.ttf')
     draw.text(location, text, font=font)
+    return image
 
 # TODO: convert to use pie slice instead of line
 # Creates roulette wheel animation
-def draw_roulette_wheel(sections=2, frames=16, fill=(255,255,255)):
-    image = Image.new('RGB', (columns, rows*frames))
+def draw_spinning_line(frames=32, fill=(255,255,255), width=1, ccw = False):
+    output = Image.new('RGB', (columns, rows*frames))
+    image = Image.new('RGB', (columns, rows))
     draw = ImageDraw.Draw(image)
-    rotation = 0
-    radian_rotation = np.deg2rad(360/frames)
-    # TODO: a bunch of trig for calculating points based on rotation that I don't feel like doing right now
+    radius = columns if (columns > rows) else rows
+    theta = 0
+    radian_delta = np.deg2rad(360/frames)
+    # generate frames
     for i in range(frames):
-        rotation += radian_rotation
-        point1 = (0,0)
-        point2 = (columns,rows)
-        # TODO: add counter clockwise support
-        draw.line((point1,point2),fill=fill)
+        # polar to cartesian
+        point1 = (radius*np.cos(theta), radius*np.sin(theta))
+        point2 = (radius*np.cos(theta+np.pi), radius*np.sin(theta+np.pi))
+
+        # shift origin to center of matrix
+        point1shifted = (point1[0]+columns/2, point1[1]+rows/2)
+        point2shifted = (point2[0]+columns/2, point2[1]+rows/2)
+
+        # image manipulation
+        image.paste((0,0,0),(0,0,columns,rows)) # fill image with black
+        draw.line((point1shifted,point2shifted),fill,width) # draw line on image
+        output.paste(image,(0,rows*i)) # write image to animation
+
+        # iterate
+        theta = theta - radian_delta if ccw else theta + radian_delta
+    # return animation
+    return output
+
+# Generate default animations
+draw_spinning_line().save('img/spinningline.png')
