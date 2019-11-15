@@ -22,9 +22,10 @@ def draw_text(text, image = Image.new('RGB',(columns,rows)), location=(0,0)):
     draw.text(location, text, font=font)
     return image
 
-# TODO: convert to use pie slice instead of line
-# Creates roulette wheel animation
-def draw_spinning_line(frames=32, fill=(255,255,255), width=1, ccw = False):
+# TODO: draw_scroll_text function
+
+# Creates spinning line animation
+def draw_spinning_line(frames=32, fill=(255,255,255), width=1, ccw=False):
     output = Image.new('RGB', (columns, rows*frames))
     image = Image.new('RGB', (columns, rows))
     draw = ImageDraw.Draw(image)
@@ -51,5 +52,43 @@ def draw_spinning_line(frames=32, fill=(255,255,255), width=1, ccw = False):
     # return animation
     return output
 
+# TODO: add logic to reverse math when height is greater than width
+# Creates roulette wheel animation
+def draw_roulette_wheel(frames=32, fill=(255,255,255), width=20, ccw=False):
+    radius = columns if (columns > rows) else rows
+    constraint = columns if (columns < rows) else rows
+    offset = (radius - constraint) / 2
+
+    output = Image.new('RGB', (columns, rows*frames))
+    image = Image.new('RGB', (columns, rows))
+    draw = ImageDraw.Draw(image)
+
+    theta = 360/frames # in degrees
+    start = 0
+    end = start+width
+
+
+    print(str(rows) + ', ' + str(columns))
+
+    # generate frames
+    for i in range(frames):
+
+        # image manipulation
+        image.paste((0,0,0),(0,0,columns,rows)) # fill image with black
+        draw.pieslice((0,-offset,columns,columns-offset),start,end,fill)
+        draw.pieslice((0,-offset,columns,columns-offset),start+180,end+180,fill)
+        output.paste(image,(0,rows*i)) # write image to animation
+
+        # iterate
+        start = theta - width if ccw else start + theta
+        end = start+width
+
+    # return animation
+    return output
+
+# def custom_crop():
+
+
 # Generate default animations
-draw_spinning_line().save('img/spinningline.png')
+# draw_spinning_line().save('img/spinningline.png')
+draw_roulette_wheel(16).save('img/roulettewheel.png')
