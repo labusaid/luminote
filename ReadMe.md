@@ -7,7 +7,7 @@ Read through the global variables in animations.py and configure to match how yo
 
 To install dependencies run: 
 ```bash
-sudo apt-get install libjpeg-dev zlib1g-dev
+sudo apt-get install libjpeg-dev zlib1g-dev ffmpeg
 sudo pip install -r requirements.txt
 ```
 This may take a few minutes so just be patient

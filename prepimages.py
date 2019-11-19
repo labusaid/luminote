@@ -22,14 +22,12 @@ def draw_text(text, image = Image.new('RGB',(columns,rows)), location=(0,0)):
     draw.text(location, text, font=font)
     return image
 
-# TODO: draw_scroll_text function
 def draw_scroll_text(text):
     image = Image.new('RGB', (columns, rows))
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype(config.font)
 
-    textwidth = draw.textsize(text,font=font)[0]
-    textheight = draw.textsize(text,font=font)[1]
+    textwidth, textheight = draw.textsize(text,font=font)
 
     # center if text is less than width
     if (textwidth <= columns):
