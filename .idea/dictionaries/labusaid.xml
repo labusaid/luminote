@@ -8,6 +8,8 @@
       <w>pixeled</w>
       <w>pixnum</w>
       <w>rgbw</w>
+      <w>textheight</w>
+      <w>textwidth</w>
     </words>
   </dictionary>
 </component>

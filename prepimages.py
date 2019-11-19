@@ -18,11 +18,36 @@ def format(image):
 # Draws text over a specified image, defaults to a new image with text starting in the top left
 def draw_text(text, image = Image.new('RGB',(columns,rows)), location=(0,0)):
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('resources/visitor1.ttf')
+    font = ImageFont.truetype(config.font)
     draw.text(location, text, font=font)
     return image
 
 # TODO: draw_scroll_text function
+def draw_scroll_text(text):
+    image = Image.new('RGB', (columns, rows))
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype(config.font)
+
+    textwidth = draw.textsize(text,font=font)[0]
+    textheight = draw.textsize(text,font=font)[1]
+
+    # center if text is less than width
+    if (textwidth <= columns):
+        offset = (columns-textwidth)/2
+        draw_text(text, image, (offset,0))
+        return image
+    else:
+        frames = (textwidth-columns)+1
+        output = Image.new('RGB', (columns, rows * frames))
+        offset = 0
+        # generate frames
+        for i in range(frames):
+            # image manipulation
+            image.paste((0, 0, 0), (0, 0, columns, rows))  # fill image with black
+            draw_text(text, image, (offset,0))
+            output.paste(image, (0, rows * i))  # write image to animation
+            offset -= 1
+        return output
 
 # Creates spinning line animation
 def draw_spinning_line(frames=32, fill=(255,255,255), width=1, ccw=False):
@@ -86,9 +111,7 @@ def draw_roulette_wheel(frames=32, fill=(255,255,255), width=20, ccw=False):
     # return animation
     return output
 
-# def custom_crop():
-
-
 # Generate default animations
 # draw_spinning_line().save('img/spinningline.png')
-draw_roulette_wheel(16).save('img/roulettewheel.png')
+# draw_roulette_wheel().save('img/roulettewheel.png')
+draw_scroll_text('  why milan built like an improper fraction  ').save('img/text.png')

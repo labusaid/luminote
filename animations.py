@@ -115,13 +115,14 @@ def draw_frame(pixel_map, source, frame_number):
 
 # places through a sequence of frames at given framerate
 def play_animation(pixel_map, source, fps):
-    img = Image.open(source)
+    image = Image.open(source)
     frametime = 1/fps
-    for i in range (16):
+    for i in range (int(image.height/rows)):
         play_frame(pixel_map, source, i, frametime)
 
 test_map = zigzag_map()
 # color_wipe(test_map, .05, 255,0,0)
 # color_wipe(test_map, .05, 0,0,0)
 while True:
-    play_animation(test_map, 'img/spinningline.png', 30)
+    # play_animation(test_map, 'img/roulettewheel.png', 15)
+    play_animation(test_map, 'img/text.png', 30)
