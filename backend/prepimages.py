@@ -1,6 +1,6 @@
 # Script used to prep images for use by animations.py
 import numpy as np
-import config
+from backend import config
 from PIL import Image, ImageDraw, ImageFont
 
 # Copy settings from config.py

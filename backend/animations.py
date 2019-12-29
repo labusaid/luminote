@@ -1,6 +1,6 @@
 # Functions for organization and animation of NeoPixels
 # Most code in this file is only designed to be run natively on a raspberry pi or other control device.
-import config
+from backend import config
 import time
 import board
 import neopixel
@@ -121,8 +121,7 @@ def play_animation(pixel_map, source, fps):
         play_frame(pixel_map, source, i, frametime)
 
 test_map = zigzag_map()
-# color_wipe(test_map, .05, 255,0,0)
-# color_wipe(test_map, .05, 0,0,0)
+
 while True:
     # play_animation(test_map, 'img/roulettewheel.png', 15)
     play_animation(test_map, 'img/text.png', 30)
