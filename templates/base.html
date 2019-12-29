@@ -4,7 +4,7 @@
 {# Jinja2 template for landing page #}
 
 <head>
-    <title>Luminote</title>
+    {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/luminote.css') }}">
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -13,6 +13,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
 </head>
 
 <body>
@@ -30,8 +32,18 @@
         </div>
     </div>
 </nav>
-<div class="container-fluid">
 
+<div id="content">
+    {% block content %}
+    <div class="row">
+        <div class="col-sm-8">
+            1 of 2
+        </div>
+        <div class="col-sm-4">
+            2 of 2
+        </div>
+    </div>
+    {% endblock %}
 </div>
 
 <!-- Optional JavaScript -->
