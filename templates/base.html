@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100" style="overflow: hidden">
 
 {# Jinja2 template for landing page #}
 
@@ -17,7 +17,7 @@
     {% endblock %}
 </head>
 
-<body>
+<body class="h-100">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Luminote</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
@@ -33,17 +33,15 @@
     </div>
 </nav>
 
-<div id="content">
-    {% block content %}
-    <div class="row">
+<div class="container-fluid h-100">
+    <div class="row" style="height: 90%; padding: 15px">
         <div class="col-sm-8">
-            1 of 2
+            {% block content_left %}{% endblock %}
         </div>
         <div class="col-sm-4">
-            2 of 2
+            {% block content_right %}{% endblock %}
         </div>
     </div>
-    {% endblock %}
 </div>
 
 <!-- Optional JavaScript -->

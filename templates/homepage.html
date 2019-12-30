@@ -1,8 +1,28 @@
 {% extends "base.html" %}
 {% block title %}Luminote{% endblock %}
-{% block content %}
-<h1>Home</h1>
-<p class="important">
-    Welcome to my awesome homepage.
-</p>
+
+{% block content_left %}
+<div class="card h-100">
+  <div class="card-header">
+    Prepare a sequence
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block content_right %}
+<div class="card h-100">
+  <div class="card-header">
+    Current sequence
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
 {% endblock %}

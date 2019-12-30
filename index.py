@@ -16,6 +16,6 @@ def setup():
 def wiki():
     return render_template('base.html')
 
-@app.route('/resources')
-def css():
-    return 'WIP'
+@app.route('/static/css')
+def serve_css():
+    return app.send_static_file('css/luminote.css')
