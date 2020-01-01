@@ -11,4 +11,4 @@ columns = 32
 font = 'resources/visitor1.ttf'
 
 # Music analysis
-music_path = 'music/ModestMouth.mp3'
+music_path = 'backend/music/ModestMouth.mp3'

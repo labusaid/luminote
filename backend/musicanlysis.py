@@ -1,5 +1,5 @@
 # Helper module for generating basic graphics from music
-from backend import config
+import config
 import librosa
 
 # TODO: create matrix of equalizer levels
