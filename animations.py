@@ -19,7 +19,7 @@ pixel_pin = board.D18
 # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
 ORDER = neopixel.GRB
 
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=.05, auto_write=False, pixel_order=ORDER)
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=.5, auto_write=False, pixel_order=ORDER)
 
 # Pixel mapping for addressing using a 2d array
 # Direct matrix map generation
@@ -72,11 +72,31 @@ def wheel(pos):
         b = int(255 - pos*3)
     return (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
 
+def clubwheel(pos):
+    g = 0
+    if pos < 0 or pos > 255:
+        r = g = b = 0
+    elif pos < 127:
+        r = pos
+        b = 255-pos
+    else:
+        r = 255-pos
+        b = pos
+    return (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
+
 def rainbow_cycle(wait):
     for j in range(255):
         for i in range(num_pixels):
             pixel_index = (i * 256 // num_pixels) + j
             pixels[i] = wheel(pixel_index & 255)
+        pixels.show()
+        time.sleep(wait)
+
+def club_cycle(wait):
+    for j in range(255):
+        for i in range(num_pixels):
+            pixel_index = (i * 256 // num_pixels) + j
+            pixels[i] = clubwheel(pixel_index & 255)
         pixels.show()
         time.sleep(wait)
 
@@ -124,4 +144,5 @@ test_map = zigzag_map()
 
 while True:
     # play_animation(test_map, 'img/roulettewheel.png', 15)
-    play_animation(test_map, 'img/text.png', 30)
+    # play_animation(test_map, 'img/text.png', 30)
+    club_cycle(.005)
