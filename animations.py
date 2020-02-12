@@ -21,6 +21,7 @@ ORDER = neopixel.GRB
 
 pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=.5, auto_write=False, pixel_order=ORDER)
 
+
 # Pixel mapping for addressing using a 2d array
 # Direct matrix map generation
 def direct_map():
@@ -32,24 +33,26 @@ def direct_map():
             pixnum += 1
     return pixel_map
 
+
 # Vertical zig zag map generation
 def zigzag_map():
     pixel_map = [[0 for x in range(columns)] for y in range(rows)]
     pixnum = 0
     for c in range(columns):
         # top down for even columns (starting from index 0)
-        if (c%2 == 0):
+        if (c % 2 == 0):
             for r in range(rows):
                 pixel_map[r][c] = pixnum
                 pixnum += 1
         # bottom up for odd columns
         else:
-            pixnum += rows-1
+            pixnum += rows - 1
             for r in range(rows):
                 pixel_map[r][c] = pixnum
                 pixnum -= 1
-            pixnum += rows+1
+            pixnum += rows + 1
     return pixel_map
+
 
 # Input a value 0 to 255 to get a color value.
 # The colours are a transition r - g - b - back to r.
@@ -58,28 +61,30 @@ def wheel(pos):
         r = g = b = 0
     elif pos < 85:
         r = int(pos * 3)
-        g = int(255 - pos*3)
+        g = int(255 - pos * 3)
         b = 0
     elif pos < 170:
         pos -= 85
-        r = int(255 - pos*3)
+        r = int(255 - pos * 3)
         g = 0
-        b = int(pos*3)
+        b = int(pos * 3)
     else:
         pos -= 170
         r = 0
-        g = int(pos*3)
-        b = int(255 - pos*3)
+        g = int(pos * 3)
+        b = int(255 - pos * 3)
     return (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
 
+
 def clubwheel(pos):
-    elif pos < 127:
+    if pos < 127:
         r = pos
-        b = 255-pos
+        b = 255 - pos
     else:
-        r = 255-pos
+        r = 255 - pos
         b = pos
     return (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
+
 
 def rainbow_cycle(wait):
     for j in range(255):
@@ -89,6 +94,7 @@ def rainbow_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
+
 def club_cycle(wait):
     for j in range(255):
         for i in range(num_pixels):
@@ -97,18 +103,21 @@ def club_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
+
 # fills pixels columns by column with specified color
 def color_wipe(pixel_map, wait, red, green, blue):
     for i in range(len(pixel_map[0])):
         for r in range(len(pixel_map)):
-            pixels[pixel_map[r][i]] = (red,green,blue)
+            pixels[pixel_map[r][i]] = (red, green, blue)
         pixels.show()
         time.sleep(wait)
 
+
 # clears all pixels
 def clear_pixels():
-    pixels.fill((0,0,0))
+    pixels.fill((0, 0, 0))
     pixels.show()
+
 
 # load and display a frame for set amount of time
 def play_frame(pixel_map, source, frame_number, wait):
@@ -117,9 +126,10 @@ def play_frame(pixel_map, source, frame_number, wait):
     # Writes each pixel to mapped pixels
     for r in range(rows):
         for c in range(columns):
-            pixels[pixel_map[r][c]] = pic[c, (r + frame_number*rows)]
+            pixels[pixel_map[r][c]] = pic[c, (r + frame_number * rows)]
     pixels.show()
     time.sleep(wait)
+
 
 # draws frame ignoring black pixels, requires pixels.show() to display
 def draw_frame(pixel_map, source, frame_number):
@@ -127,14 +137,15 @@ def draw_frame(pixel_map, source, frame_number):
     # Writes each pixel to mapped pixels
     for r in range(rows):
         for c in range(columns):
-            if not (img[c, (r + frame_number*rows)] == (0,0,0)):
-                pixels[pixel_map[r][c]] = img[c, (r + frame_number*rows)]
+            if not (img[c, (r + frame_number * rows)] == (0, 0, 0)):
+                pixels[pixel_map[r][c]] = img[c, (r + frame_number * rows)]
+
 
 # plays through a sequence of frames at given framerate
 def play_animation(pixel_map, source, fps):
     image = Image.open(source)
-    frametime = 1/fps
-    for i in range (int(image.height/rows)):
+    frametime = 1 / fps
+    for i in range(int(image.height / rows)):
         play_frame(pixel_map, source, i, frametime)
     g = 0
     if pos < 0 or pos > 255:
