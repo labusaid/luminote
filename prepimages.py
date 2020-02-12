@@ -1,4 +1,4 @@
-# Script used to prep images for use by animations.py
+# Script used to prep images for use by animations.py when using an led matrix
 import numpy as np
 import config
 from PIL import Image, ImageDraw, ImageFont

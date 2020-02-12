@@ -73,9 +73,6 @@ def wheel(pos):
     return (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
 
 def clubwheel(pos):
-    g = 0
-    if pos < 0 or pos > 255:
-        r = g = b = 0
     elif pos < 127:
         r = pos
         b = 255-pos
@@ -133,16 +130,12 @@ def draw_frame(pixel_map, source, frame_number):
             if not (img[c, (r + frame_number*rows)] == (0,0,0)):
                 pixels[pixel_map[r][c]] = img[c, (r + frame_number*rows)]
 
-# places through a sequence of frames at given framerate
+# plays through a sequence of frames at given framerate
 def play_animation(pixel_map, source, fps):
     image = Image.open(source)
     frametime = 1/fps
     for i in range (int(image.height/rows)):
         play_frame(pixel_map, source, i, frametime)
-
-test_map = zigzag_map()
-
-while True:
-    # play_animation(test_map, 'img/roulettewheel.png', 15)
-    # play_animation(test_map, 'img/text.png', 30)
-    club_cycle(.005)
+    g = 0
+    if pos < 0 or pos > 255:
+        r = g = b = 0
