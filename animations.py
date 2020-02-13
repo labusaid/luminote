@@ -147,6 +147,3 @@ def play_animation(pixel_map, source, fps):
     frametime = 1 / fps
     for i in range(int(image.height / rows)):
         play_frame(pixel_map, source, i, frametime)
-    g = 0
-    if pos < 0 or pos > 255:
-        r = g = b = 0
