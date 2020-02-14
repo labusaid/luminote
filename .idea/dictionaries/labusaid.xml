@@ -2,6 +2,7 @@
   <dictionary name="labusaid">
     <words>
       <w>anima</w>
+      <w>btns</w>
       <w>frametime</w>
       <w>grbw</w>
       <w>jinja</w>
@@ -11,6 +12,7 @@
       <w>pixeled</w>
       <w>pixnum</w>
       <w>rgbw</w>
+      <w>roulettewheel</w>
       <w>textheight</w>
       <w>textwidth</w>
     </words>

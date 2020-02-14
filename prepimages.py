@@ -90,9 +90,6 @@ def draw_roulette_wheel(frames=32, fill=(255,255,255), width=20, ccw=False):
     start = 0
     end = start+width
 
-
-    print(str(rows) + ', ' + str(columns))
-
     # generate frames
     for i in range(frames):
 
@@ -109,7 +106,36 @@ def draw_roulette_wheel(frames=32, fill=(255,255,255), width=20, ccw=False):
     # return animation
     return output
 
+
+# Creates ripple animation
+# TODO: add fill option
+def draw_ripple(frames=32, color=(255,255,255), width=1):
+    output = Image.new('RGB', (columns, rows*frames))
+    image = Image.new('RGB', (columns, rows))
+    draw = ImageDraw.Draw(image)
+
+    radius = 0
+    center = (rows/2,columns/2)
+    maxradius = rows/2 if rows > columns else columns/2
+    growrate = maxradius/frames
+
+    # generate frames
+    for i in range(frames):
+
+        # image manipulation
+        image.paste((0,0,0),(0,0,columns,rows)) # fill image with black
+        print((np.floor(center[1]-radius),np.floor(center[0]-radius),np.ceil(center[1]+radius),np.ceil(center[0]+radius)))
+        draw.ellipse((np.floor(center[1]-radius),np.floor(center[0]-radius),np.ceil(center[1]+radius),np.ceil(center[0]+radius)), outline=color, width=width)
+        output.paste(image,(0,rows*i)) # write image to animation
+
+        # iterate
+        radius += growrate
+
+    # return animation
+    return output
+
 # Generate default animations
 # draw_spinning_line().save('img/spinningline.png')
 # draw_roulette_wheel().save('img/roulettewheel.png')
-draw_scroll_text('  why milan built like an improper fraction  ').save('img/text.png')
+# draw_scroll_text('  why milan built like an improper fraction  ').save('img/text.png')
+# draw_ripple().save('img/ripple.png')
