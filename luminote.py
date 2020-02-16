@@ -33,5 +33,5 @@ def scan_buttons():
         activate_cue('test')
 
 # ButtonBoard callback
-btns.when_activated(scan_buttons())
+btns.when_activated(scan_buttons)
 
