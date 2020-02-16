@@ -1,3 +1,4 @@
+# TODO: merge with prepimages.py and increase modularity
 # Script used to prep images for use by animations.py when using an led matrix
 import numpy as np
 import config
@@ -36,20 +37,20 @@ def draw_scroll_text(text):
         return image
     else:
         frames = (textwidth-columns)+1
-        output = Image.new('RGB', (columns, rows * frames))
+        output = Image.new('RGB', (columns * frames, rows))
         offset = 0
         # generate frames
         for i in range(frames):
             # image manipulation
             image.paste((0, 0, 0), (0, 0, columns, rows))  # fill image with black
             draw_text(text, image, (offset,0))
-            output.paste(image, (0, rows * i))  # write image to animation
+            output.paste(image, (columns * i, 0))  # write image to animation
             offset -= 1
         return output
 
 # Creates spinning line animation
 def draw_spinning_line(frames=32, fill=(255,255,255), width=1, ccw=False):
-    output = Image.new('RGB', (columns, rows*frames))
+    output = Image.new('RGB', (columns * frames, rows))
     image = Image.new('RGB', (columns, rows))
     draw = ImageDraw.Draw(image)
     radius = columns if (columns > rows) else rows
@@ -68,7 +69,7 @@ def draw_spinning_line(frames=32, fill=(255,255,255), width=1, ccw=False):
         # image manipulation
         image.paste((0,0,0),(0,0,columns,rows)) # fill image with black
         draw.line((point1shifted,point2shifted),fill,width) # draw line on image
-        output.paste(image,(0,rows*i)) # write image to animation
+        output.paste(image, (columns * i, 0))  # write image to animation
 
         # iterate
         theta = theta - radian_delta if ccw else theta + radian_delta
@@ -82,7 +83,7 @@ def draw_roulette_wheel(frames=32, fill=(255,255,255), width=20, ccw=False):
     constraint = columns if (columns < rows) else rows
     offset = (radius - constraint) / 2
 
-    output = Image.new('RGB', (columns, rows*frames))
+    output = Image.new('RGB', (columns * frames, rows))
     image = Image.new('RGB', (columns, rows))
     draw = ImageDraw.Draw(image)
 
@@ -97,7 +98,7 @@ def draw_roulette_wheel(frames=32, fill=(255,255,255), width=20, ccw=False):
         image.paste((0,0,0),(0,0,columns,rows)) # fill image with black
         draw.pieslice((0,-offset,columns,columns-offset),start,end,fill)
         draw.pieslice((0,-offset,columns,columns-offset),start+180,end+180,fill)
-        output.paste(image,(0,rows*i)) # write image to animation
+        output.paste(image, (columns * i, 0))  # write image to animation
 
         # iterate
         start = theta - width if ccw else start + theta
@@ -110,7 +111,7 @@ def draw_roulette_wheel(frames=32, fill=(255,255,255), width=20, ccw=False):
 # Creates ripple animation
 # TODO: add fill option
 def draw_ripple(frames=32, color=(255,255,255), width=1):
-    output = Image.new('RGB', (columns, rows*frames))
+    output = Image.new('RGB', (columns * frames, rows))
     image = Image.new('RGB', (columns, rows))
     draw = ImageDraw.Draw(image)
 
@@ -125,7 +126,7 @@ def draw_ripple(frames=32, color=(255,255,255), width=1):
         # image manipulation
         image.paste((0,0,0),(0,0,columns,rows)) # fill image with black
         draw.ellipse((np.floor(center[1]-radius),np.floor(center[0]-radius),np.ceil(center[1]+radius),np.ceil(center[0]+radius)), outline=color, width=width)
-        output.paste(image,(0,rows*i)) # write image to animation
+        output.paste(image, (columns * i, 0))  # write image to animation
 
         # iterate
         radius += growrate
@@ -134,7 +135,7 @@ def draw_ripple(frames=32, color=(255,255,255), width=1):
     return output
 
 # Generate default animations
-# draw_spinning_line().save('img/spinningline.png')
-# draw_roulette_wheel().save('img/roulettewheel.png')
-# draw_scroll_text('  why milan built like an improper fraction  ').save('img/text.png')
-# draw_ripple().save('img/ripple.png')
+draw_spinning_line().save('img/instar/spinningline.bmp')
+draw_roulette_wheel().save('img/instar/roulettewheel.bmp')
+draw_scroll_text('  INSTAR  ').save('img/instar/text.bmp')
+draw_ripple().save('img/instar/ripple.bmp')
