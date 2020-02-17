@@ -1,5 +1,5 @@
 # General configuration shared globally
-# The number of NeoPixels
+# The number of NeoPixels (only used when running as display)
 num_pixels = 256
 
 # Grid layout
@@ -7,7 +7,10 @@ num_pixels = 256
 rows = 8
 columns = 32
 
-# Font
+# Output configuration
+
+
+# Font for text drawing
 font = 'resources/visitor1.ttf'
 
 # Music analysis
