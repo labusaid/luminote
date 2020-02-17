@@ -15,11 +15,14 @@ image = Image.new('RGB', (columns, rows))
 draw = ImageDraw.Draw(image)
 font = ImageFont.truetype(config.font)
 
+
 # fills scratch image with black
 def clear_scratch():
     image.paste((0, 0, 0), (0, 0, columns, rows))
 
+
 # TODO: formats externally made image to insure compatibility
+# format image for use with display code
 def format(image):
     img = Image.open(image)
     pic = img.load()
@@ -29,17 +32,32 @@ def format(image):
 
 # Draws text over a specified image, defaults to a new image with text starting in the top left
 def draw_text(text, image=Image.new('RGB', (columns, rows)), location=(0, 0), fill=(255, 255, 255)):
-    draw = ImageDraw.Draw(image)
-    draw.font = ImageFont.truetype(config.font)
-    draw.text(location, text, fill)
+    textdraw = ImageDraw.Draw(image)
+    textdraw.font = ImageFont.truetype(config.font)
+    textdraw.text(location, text, fill)
     return image
+
+
+# converts animation to advance right by frame instead of down for compatibility with other tools
+def convert_right_advance(image):
+    frames = int(image.height/rows)
+
+    output = Image.new('RGB', (columns * frames, rows))
+
+    # generate frames
+    for i in range(frames):
+        # image manipulation
+        output.paste(image.crop((0, rows * i, columns, rows * i + rows)), (columns * i, 0))  # write image to animation
+
+    # return animation
+    return output
 
 
 def draw_scroll_text(text, colorwheel=clr.wheel):
     textwidth, textheight = draw.textsize(text, font=font)
 
     # center if text is less than width
-    if (textwidth <= columns):
+    if textwidth <= columns:
         offset = (columns - textwidth) / 2
         draw_text(text, image, (offset, 0))
         return image
@@ -163,9 +181,9 @@ def draw_ripple(frames=32, colorwheel=clr.wheel, width=1):
 
 
 # Generate default animations
-draw_spinning_line().save('img/spinningline.png')
-draw_roulette_wheel(frames=64).save('img/roulettewheel.png')
-draw_roulette_wheel(frames=64, colorwheel=clr.clubwheel,).save('img/clubroulettewheel.png')
-draw_roulette_wheel(frames=32).save('img/roulettewheel32.png')
-draw_scroll_text('   Sample Text   ').save('img/text.png')
-draw_ripple(width=3).save('img/ripple.png')
+# draw_spinning_line().save('img/spinningline.png')
+# convert_right_advance(draw_spinning_line()).save('img/spinninglineconv.png')
+# draw_roulette_wheel().save('img/roulettewheel.png')
+# draw_roulette_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubroulettewheel.png')
+# draw_scroll_text('   Sample Text   ').save('img/text.png')
+# draw_ripple(width=3).save('img/ripple.png')

@@ -41,7 +41,7 @@ def zigzag_map():
     pixnum = 0
     for c in range(columns):
         # top down for even columns (starting from index 0)
-        if (c % 2 == 0):
+        if c % 2 == 0:
             for r in range(rows):
                 pixel_map[r][c] = pixnum
                 pixnum += 1

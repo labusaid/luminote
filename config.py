@@ -7,9 +7,6 @@ num_pixels = 256
 rows = 8
 columns = 32
 
-# Output configuration
-
-
 # Font for text drawing
 font = 'resources/visitor1.ttf'
 
