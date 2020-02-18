@@ -13,6 +13,7 @@ llvmlite==0.31.0
 numba==0.48.0
 numpy==1.18.1
 Pillow==7.0.0
+py-midi==2.0.1
 pycparser==2.19
 pyftdi==0.43.0
 pyserial==3.4

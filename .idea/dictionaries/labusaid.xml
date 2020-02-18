@@ -4,12 +4,14 @@
       <w>anima</w>
       <w>btns</w>
       <w>colorwheel</w>
+      <w>curroffset</w>
       <w>frametime</w>
       <w>grbw</w>
       <w>jinja</w>
       <w>leds</w>
       <w>luminote</w>
       <w>machinestate</w>
+      <w>offesetinc</w>
       <w>pixeled</w>
       <w>pixnum</w>
       <w>rgbw</w>

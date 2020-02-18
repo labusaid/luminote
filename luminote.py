@@ -15,12 +15,10 @@ btns = ButtonBoard(35, 36, 37, 38)
 # Menu system
 machinestate = 'default'
 
-
 # Main
-# while True:
-#     # anima.play_animation(test_map, 'img/roulettewheel.png', 15)
-#     # anima.play_animation(test_map, 'img/text.png', 30)
-#     anima.club_cycle(.005)
+while True:
+    anima.play_animation(test_map, 'img/roulettewheel.png', 15)
+    # anima.play_animation(test_map, 'img/text.png', 30)
 
 # Cue Control
 def activate_cue(cue):
@@ -28,6 +26,7 @@ def activate_cue(cue):
 
 
 # TODO: usb midi control
+
 
 # Note: it would be technically more efficient to define each button separately and have individual callbacks, but in this case I'm favoring clean code
 def scan_buttons():

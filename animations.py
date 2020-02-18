@@ -22,7 +22,6 @@ ORDER = neopixel.GRB
 
 pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=.5, auto_write=False, pixel_order=ORDER)
 
-
 # Pixel mapping for addressing using a 2d array
 # Direct matrix map generation
 def direct_map():
@@ -55,29 +54,11 @@ def zigzag_map():
     return pixel_map
 
 
-def rainbow_cycle(wait):
+def wheel_cycle(colorwheel=clr.wheel, wait=.005):
     for j in range(255):
         for i in range(num_pixels):
             pixel_index = (i * 256 // num_pixels) + j
-            pixels[i] = clr.wheel(pixel_index & 255)
-        pixels.show()
-        time.sleep(wait)
-
-
-def club_cycle(wait):
-    for j in range(255):
-        for i in range(num_pixels):
-            pixel_index = (i * 256 // num_pixels) + j
-            pixels[i] = clr.clubwheel(pixel_index & 255)
-        pixels.show()
-        time.sleep(wait)
-
-
-# fills pixels columns by column with specified color
-def color_wipe(pixel_map, wait, red, green, blue):
-    for i in range(len(pixel_map[0])):
-        for r in range(len(pixel_map)):
-            pixels[pixel_map[r][i]] = (red, green, blue)
+            pixels[i] = colorwheel(pixel_index & 255)
         pixels.show()
         time.sleep(wait)
 
