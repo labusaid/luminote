@@ -32,7 +32,7 @@ def format(image):
 
 # converts animation to advance right by frame instead of down for compatibility with other tools
 def convert_right_advance(image):
-    frames = int(image.height/rows)
+    frames = int(image.height / rows)
 
     output = Image.new('RGB', (columns * frames, rows))
 
@@ -88,24 +88,28 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, scandirection=1, scan
 
     # recursively call draws_scanner twice to generate each half of the output
     if scanbouce:
-        output.paste(draw_scanner(frames=int(frames/2), colorwheel=colorwheel, width=width, scandirection=scandirection), (0, 0))
-        output.paste(draw_scanner(frames=int(frames/2), colorwheel=colorwheel, width=width, scandirection=0-scandirection), (0, frames*int(rows/2)))
+        output.paste(
+            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, scandirection=scandirection),
+            (0, 0))
+        output.paste(
+            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, scandirection=0 - scandirection),
+            (0, frames * int(rows / 2)))
 
     else:
         # color cycle
         colorinc = 255 / frames
         currcolor = 0
 
-        if (scandirection == 1):
+        if scandirection == 1:
             curroffset = 0
-            offesetinc = columns/frames
-        elif (scandirection == 2):
+            offesetinc = columns / frames
+        elif scandirection == 2:
             curroffset = 0
             offesetinc = rows / frames
-        elif (scandirection == -1):
+        elif scandirection == -1:
             curroffset = columns
             offesetinc = -(columns / frames)
-        elif (scandirection == -2):
+        elif scandirection == -2:
             curroffset = rows
             offesetinc = -(rows / frames)
 
@@ -114,14 +118,14 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, scandirection=1, scan
 
             # image manipulation
             clear_scratch()
-            if (scandirection == 1):
-                draw.rectangle((curroffset-width/2, 0, curroffset+width/2, rows), fill=colorwheel(currcolor))
-            elif (scandirection == 2):
-                draw.rectangle((0, curroffset-width/2, columns, curroffset+width/2), fill=colorwheel(currcolor))
-            elif (scandirection == -1):
-                draw.rectangle((curroffset+width/2, 0, curroffset-width/2, rows), fill=colorwheel(currcolor))
-            elif (scandirection == -2):
-                draw.rectangle((0, curroffset-width/2, columns, curroffset+width/2), fill=colorwheel(currcolor))
+            if scandirection == 1:
+                draw.rectangle((curroffset - width / 2, 0, curroffset + width / 2, rows), fill=colorwheel(currcolor))
+            elif scandirection == 2:
+                draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
+            elif scandirection == -1:
+                draw.rectangle((curroffset + width / 2, 0, curroffset - width / 2, rows), fill=colorwheel(currcolor))
+            elif scandirection == -2:
+                draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
 
             output.paste(image, (0, rows * i))  # write image to animation
 
@@ -131,6 +135,7 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, scandirection=1, scan
 
     # return animation
     return output
+
 
 # TODO: candy cane
 
@@ -169,8 +174,8 @@ def draw_spinning_line(frames=32, colorwheel=clr.wheel, width=1, ccw=False):
 
 
 # TODO: add logic to reverse math when height is greater than width
-# Creates roulette wheel animation
-def draw_roulette_wheel(frames=32, colorwheel=clr.wheel, width=20, ccw=False):
+# Creates pin wheel animation
+def draw_pin_wheel(frames=32, colorwheel=clr.wheel, width=20, ccw=False):
     radius = columns if (columns > rows) else rows
     constraint = columns if (columns < rows) else rows
     offset = (radius - constraint) / 2
@@ -232,11 +237,18 @@ def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
     # return animation
     return output
 
-# Generate default animations
-# draw_spinning_line().save('img/spinningline.png')
-# convert_right_advance(draw_spinning_line()).save('img/spinninglineconv.png')
-# draw_roulette_wheel().save('img/roulettewheel.png')
-# draw_roulette_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubroulettewheel.png')
-# draw_scroll_text('   Sample Text   ').save('img/text.png')
-# draw_ripple().save('img/ripple.png')
-# draw_scanner(scanbouce=True).save('img/scanner.png')
+
+# Generating animations examples
+# draw_spinning_line().save('img/spinningline.png') # basic usage
+# draw_spinning_line(colorwheel=lambda a: (255,0,0)).save('img/spinningline.png') # lamda function for static color
+# convert_right_advance(draw_spinning_line()).save('img/spinninglineconv.bmp') # example of use for exporting to other programs
+# draw_scroll_text('   Sample Text   ').save('img/text.png') # generated text animation
+# draw_scanner(scanbouce=True).save('img/scanner.png') # example with arguments
+# draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments
+
+# Default animations
+draw_scroll_text('   Luminote   ').save('img/text.png')
+draw_scanner().save('img/scanner.png')
+draw_spinning_line().save('img/spinningline.png')
+draw_pin_wheel().save('img/pinwheel.png')
+draw_ripple().save('img/ripple.png')

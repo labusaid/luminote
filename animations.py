@@ -20,7 +20,10 @@ pixel_pin = board.D18
 # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
 ORDER = neopixel.GRB
 
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=.5, auto_write=False, pixel_order=ORDER)
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=config.brightness, auto_write=False, pixel_order=ORDER)
+
+
+# TODO: save last frame state globally and only update pixels that need updated to reduce IO needed (and boost performance)
 
 # Pixel mapping for addressing using a 2d array
 # Direct matrix map generation
@@ -82,7 +85,7 @@ def play_frame(pixel_map, source, frame_number, wait):
 
 
 # draws frame ignoring black pixels, requires pixels.show() to display
-def draw_frame(pixel_map, source, frame_number):
+def draw_frame(pixel_map, source, frame_number=0):
     img = Image.open(source)  # Can be many different formats.
     # Writes each pixel to mapped pixels
     for r in range(rows):
@@ -92,7 +95,7 @@ def draw_frame(pixel_map, source, frame_number):
 
 
 # plays through a sequence of frames at given framerate
-def play_animation(pixel_map, source, fps):
+def play_animation(pixel_map, source, fps=16):
     image = Image.open(source)
     frametime = 1 / fps
     for i in range(int(image.height / rows)):

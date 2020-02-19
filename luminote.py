@@ -1,38 +1,49 @@
 import config
-import animations as anima
-from gpiozero import ButtonBoard
-from time import sleep
-import midi  # py-midi
-from midi import MidiConnector, ControlChange, Message
+from animations import *
+
+# from gpiozero import ButtonBoard
 
 # LED mapping
-test_map = anima.zigzag_map()
-# MIDI setup
-conn = MidiConnector('/dev/serial0')
-# Button setup
-btns = ButtonBoard(35, 36, 37, 38)
+if config.matrixmap == 'zigzag':
+    print('using zigzag map with ' + str(columns) + ' columns and ' + str(rows) + ' rows')
+    matrix_map = zigzag_map()
+elif config.matrixmap == 'direct':
+    print('using direct map with ' + str(columns) + ' columns and ' + str(rows) + ' rows')
+    matrix_map = direct_map()
+else:
+    print('pixel map not correctly specified in config.py')
+
+# Button mapping
+# btns = ButtonBoard(35, 36, 37, 38)
 
 # Menu system
 machinestate = 'default'
 
-# Main
-while True:
-    anima.play_animation(test_map, 'img/roulettewheel.png', 15)
-    # anima.play_animation(test_map, 'img/text.png', 30)
 
 # Cue Control
 def activate_cue(cue):
     print(cue + 'activated')
 
 
-# TODO: usb midi control
-
-
-# Note: it would be technically more efficient to define each button separately and have individual callbacks, but in this case I'm favoring clean code
-def scan_buttons():
-    if btns[0]:
-        activate_cue('test')
+# Note: I belive it would be technically more efficient to define each button separately and have individual callbacks, but in this case I'm favoring clean code
+# def scan_buttons():
+#     if btns[0]:
+#         activate_cue('test')
 
 
 # ButtonBoard callback
-btns.when_activated(scan_buttons)
+# btns.when_activated(scan_buttons)
+
+# Main
+print('Luminote started\nuse Ctrl+C to exit')
+while True:
+    while True:
+        play_animation(matrix_map, 'img/text.png', 32)
+        for i in range(5):
+            play_animation(matrix_map, 'img/scanner.png')
+        for i in range(5):
+            play_animation(matrix_map, 'img/spinningline.png')
+        for i in range(5):
+            play_animation(matrix_map, 'img/pinwheel.png')
+        for i in range(5):
+            play_animation(matrix_map, 'img/ripple.png', 32)

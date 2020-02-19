@@ -10,7 +10,6 @@ import librosa
 # Store the sampling rate as `sr`
 y, sr = librosa.load(config.music_path)
 
-
 # y_percussive = librosa.effects.percussive(y)
 # y_harmonic = librosa.effects.percussive(y)
 # librosa.output.write_wav('music/percussive.wav', y_percussive, sr)

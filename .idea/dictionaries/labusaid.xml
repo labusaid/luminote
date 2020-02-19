@@ -6,11 +6,14 @@
       <w>colorwheel</w>
       <w>curroffset</w>
       <w>frametime</w>
+      <w>gpio</w>
       <w>grbw</w>
       <w>jinja</w>
+      <w>lamda</w>
       <w>leds</w>
       <w>luminote</w>
       <w>machinestate</w>
+      <w>matrixmap</w>
       <w>offesetinc</w>
       <w>pixeled</w>
       <w>pixnum</w>

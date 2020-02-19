@@ -1,6 +1,4 @@
-# Function take a value between 0 and 255 and return a corresponding rgb value
-
-import config
+# Functions take a value between 0 and 255 and return a corresponding rgb tuple
 
 # Input a value 0 to 255 to get a color value.
 # The colours are a transition r - g - b - back to r.
@@ -23,7 +21,8 @@ def wheel(pos):
         b = int(255 - pos * 3)
     return (r, g, b)
 
-# Red and Blue
+
+# Red and Blue gradient
 def clubwheel(pos):
     g = 0
     r = int(pos)
