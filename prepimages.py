@@ -30,7 +30,7 @@ def format(image):
     print('Detected resolution: ' + pic.size())
 
 
-# converts animation to advance right by frame instead of down for compatibility with other tools
+# converts animation to advance right by frame instead of down for compatibility with other tools (used to export animations)
 def convert_right_advance(image):
     frames = int(image.height / rows)
 
@@ -40,6 +40,23 @@ def convert_right_advance(image):
     for i in range(frames):
         # image manipulation
         output.paste(image.crop((0, rows * i, columns, rows * i + rows)), (columns * i, 0))  # write image to animation
+
+    # return animation
+    return output
+
+
+# converts animation to advance down by frame instead of right for compatibility with other tools (used to import animations)
+def convert_down_advance(imgpath):
+    img = Image.open(imgpath)  # Can be many different formats.
+    pic = img.load()
+    frames = int(img.width / columns)
+
+    output = Image.new('RGB', (columns, rows * frames))
+
+    # generate frames
+    for i in range(frames):
+        # image manipulation
+        output.paste(img.crop((columns * i, 0, columns * i + columns, rows)), (0, rows * i))  # write image to animation
 
     # return animation
     return output
@@ -241,7 +258,8 @@ def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
 # Generating animations examples
 # draw_spinning_line().save('img/spinningline.png') # basic usage
 # draw_spinning_line(colorwheel=lambda a: (255,0,0)).save('img/spinningline.png') # lamda function for static color
-# convert_right_advance(draw_spinning_line()).save('img/spinninglineconv.bmp') # example of use for exporting to other programs
+# convert_right_advance(draw_spinning_line()).save('img/spinninglineexport.bmp') # example of use for exporting to other programs
+# convert_down_advance('img/spinninglineexport.bmp').save('img/spinninglineimport.png') # example of use for importing from other programs
 # draw_scroll_text('   Sample Text   ').save('img/text.png') # generated text animation
 # draw_scanner(scanbouce=True).save('img/scanner.png') # example with arguments
 # draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments

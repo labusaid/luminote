@@ -35,7 +35,7 @@ def activate_cue(cue):
 # btns.when_activated(scan_buttons)
 
 # Main
-print('Luminote started\nuse Ctrl+C to exit')
+print('Luminote started\nUse Ctrl+C to exit')
 while True:
     while True:
         play_animation(matrix_map, 'img/text.png', 32)
