@@ -3,7 +3,9 @@
     <words>
       <w>anima</w>
       <w>btns</w>
+      <w>colorinc</w>
       <w>colorwheel</w>
+      <w>currcolor</w>
       <w>curroffset</w>
       <w>frametime</w>
       <w>gpio</w>

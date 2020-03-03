@@ -1,5 +1,7 @@
 # TODO: merge with prepimages.py and increase modularity
 # Script used to prep images for use by animations.py when using an led matrix
+
+import random
 import numpy as np
 import config
 import colorwheels as clr
@@ -62,6 +64,55 @@ def convert_down_advance(imgpath):
     return output
 
 
+# TODO: finish this (currently just copy pasted from scanner plus some changes)
+# Creates barber pole/caution/candycane animation animation
+def draw_barber_pole(colorwheel=clr.wheel, width=3, direction=1, numcolors=1, angle=45, chevrons=False):
+    frames = 1 + numcolors * width
+
+    global curroffset, offesetinc
+    output = Image.new('RGB', (columns, rows * frames))
+
+    # color cycle
+    colorinc = 255 / frames
+    currcolor = 0
+
+    if direction == 1:
+        curroffset = 0
+        offesetinc = columns / frames
+    elif direction == 2:
+        curroffset = 0
+        offesetinc = rows / frames
+    elif direction == -1:
+        curroffset = columns
+        offesetinc = -(columns / frames)
+    elif direction == -2:
+        curroffset = rows
+        offesetinc = -(rows / frames)
+
+    # generate frames
+    for i in range(frames):
+
+        # image manipulation
+        clear_scratch()
+        if direction == 1:
+            draw.rectangle((curroffset - width / 2, 0, curroffset + width / 2, rows), fill=colorwheel(currcolor))
+        elif direction == 2:
+            draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
+        elif direction == -1:
+            draw.rectangle((curroffset + width / 2, 0, curroffset - width / 2, rows), fill=colorwheel(currcolor))
+        elif direction == -2:
+            draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
+
+        output.paste(image, (0, rows * i))  # write image to animation
+
+        # iterate
+        currcolor += colorinc
+        curroffset += offesetinc
+
+    # return animation
+    return output
+
+
 # Draws text over a specified image, defaults to a new image with text starting in the top left
 def draw_text(text, image=Image.new('RGB', (columns, rows)), location=(0, 0), fill=(255, 255, 255)):
     textdraw = ImageDraw.Draw(image)
@@ -99,17 +150,18 @@ def draw_scroll_text(text, colorwheel=clr.wheel):
 
 
 # Creates scanner animation
-def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, scandirection=1, scanbouce=False):
+def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, direction=1, bounce=False):
     global curroffset, offesetinc
     output = Image.new('RGB', (columns, rows * frames))
 
     # recursively call draws_scanner twice to generate each half of the output
-    if scanbouce:
+    if bounce:
+        # TODO: create function in colorwheels.py that splits a color wheel and returns it as two new functions
         output.paste(
-            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, scandirection=scandirection),
+            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, direction=direction),
             (0, 0))
         output.paste(
-            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, scandirection=0 - scandirection),
+            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, direction=0 - direction),
             (0, frames * int(rows / 2)))
 
     else:
@@ -117,16 +169,16 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, scandirection=1, scan
         colorinc = 255 / frames
         currcolor = 0
 
-        if scandirection == 1:
+        if direction == 1:
             curroffset = 0
             offesetinc = columns / frames
-        elif scandirection == 2:
+        elif direction == 2:
             curroffset = 0
             offesetinc = rows / frames
-        elif scandirection == -1:
+        elif direction == -1:
             curroffset = columns
             offesetinc = -(columns / frames)
-        elif scandirection == -2:
+        elif direction == -2:
             curroffset = rows
             offesetinc = -(rows / frames)
 
@@ -135,13 +187,13 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, scandirection=1, scan
 
             # image manipulation
             clear_scratch()
-            if scandirection == 1:
+            if direction == 1:
                 draw.rectangle((curroffset - width / 2, 0, curroffset + width / 2, rows), fill=colorwheel(currcolor))
-            elif scandirection == 2:
+            elif direction == 2:
                 draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
-            elif scandirection == -1:
+            elif direction == -1:
                 draw.rectangle((curroffset + width / 2, 0, curroffset - width / 2, rows), fill=colorwheel(currcolor))
-            elif scandirection == -2:
+            elif direction == -2:
                 draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
 
             output.paste(image, (0, rows * i))  # write image to animation
@@ -154,7 +206,33 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, scandirection=1, scan
     return output
 
 
-# TODO: candy cane
+# Randomly places pixels
+def draw_sparkle(frames=32, colorwheel=clr.wheel, quantity=3):
+    output = Image.new('RGB', (columns, rows * frames))
+
+    # color cycle
+    colorinc = 255 / frames
+    currcolor = 0
+
+    # generate frames
+    for i in range(frames):
+        clear_scratch()
+        for j in range(quantity):
+            x = random.randrange(rows)
+            y = random.randrange(columns)
+
+            print(colorwheel(currcolor))
+            image.paste(colorwheel(currcolor), (y, x, y + 1, x + 1))
+
+        # image manipulation
+        output.paste(image, (0, rows * i))  # write image to animation
+
+        # iterate
+        currcolor += colorinc
+
+    # return animation
+    return output
+
 
 # Creates spinning line animation
 def draw_spinning_line(frames=32, colorwheel=clr.wheel, width=1, ccw=False):
@@ -226,7 +304,7 @@ def draw_pin_wheel(frames=32, colorwheel=clr.wheel, width=20, ccw=False):
 
 
 # Creates ripple animation
-# TODO: add fill option
+# TODO: add outline option
 def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
     output = Image.new('RGB', (columns, rows * frames))
 
@@ -265,8 +343,9 @@ def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
 # draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments
 
 # Default animations
-draw_scroll_text('   Luminote   ').save('img/text.png')
-draw_scanner().save('img/scanner.png')
-draw_spinning_line().save('img/spinningline.png')
-draw_pin_wheel().save('img/pinwheel.png')
-draw_ripple().save('img/ripple.png')
+# draw_scroll_text('   Luminote   ').save('img/text.png')
+# draw_scanner().save('img/scanner.png')
+draw_sparkle().save('img/sparkle.png')
+# draw_spinning_line().save('img/spinningline.png')
+# draw_pin_wheel().save('img/pinwheel.png')
+# draw_ripple().save('img/ripple.png')

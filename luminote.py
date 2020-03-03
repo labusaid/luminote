@@ -34,6 +34,7 @@ def activate_cue(cue):
 # ButtonBoard callback
 # btns.when_activated(scan_buttons)
 
+# TODO: implement threading and run driver code on a separate thread with interrupts on button events
 # Main
 print('Luminote started\nUse Ctrl+C to exit')
 while True:

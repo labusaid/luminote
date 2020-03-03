@@ -73,7 +73,7 @@ def clear_pixels():
 
 
 # load and display a frame for set amount of time
-def play_frame(pixel_map, source, frame_number, wait):
+def play_frame(pixel_map, source, wait, frame_number=0):
     img = Image.open(source)  # Can be many different formats.
     pic = img.load()
     # Writes each pixel to mapped pixels
