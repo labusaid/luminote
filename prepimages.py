@@ -227,26 +227,31 @@ def draw_spinning_line(frames=32, colorwheel=clr.wheel, width=1, ccw=False):
 # Draws a polygon based on given points that moves across the display
 def draw_moving_poly(points, colorwheel=clr.wheel, direction=1, numcolors=1, buffer=0):
     # determine relevant outer bound of polygon
-    if direction > 0:
-        width = 0
-    elif columns > rows:
-        width = columns
-    else:
-        width = rows
+    bound1 = 0
+    bound2 = 0
 
-    for i in points:
-        if direction == 1 and i[0] > width:
-            width = i[0]
-        elif direction == 2 and i[1] > width:
-            width = i[1]
-        elif direction == -1 and i[0] < width:
-            width = i[0]
-        elif direction == -2 and i[1] < width:
-            width = i[1]
+    # use x coords
+    if direction == 1 or -1:
+        bound1 = columns
+        bound2 = 0
+        for i in points:
+            if i[0] < bound1: bound1 = i[0]
+            if i[0] > bound2: bound2 = i[0]
+    # use y coords
+    else:
+        bound1 = rows
+        bound2 = 0
+        for i in points:
+            if i[1] < bound1: bound1 = i[1]
+            if i[1] > bound2: bound2 = i[1]
+    width = bound2 - bound1
 
     # calculate number of frames necessary for loop
     frames = 1 + numcolors * width
 
+    # calculate quantity of
+
+    # prep output image
     global curroffset, offesetinc
     output = Image.new('RGB', (columns, rows * frames))
 
@@ -374,7 +379,7 @@ def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
 # draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments
 
 # Default animations
-draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]]).save('img/candycane.png')
+draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]], direction=1).save('img/candycane.png')
 # draw_scroll_text('   Luminote   ').save('img/text.png')
 # draw_scanner().save('img/scanner.png')
 # draw_sparkle().save('img/sparkle.png')
