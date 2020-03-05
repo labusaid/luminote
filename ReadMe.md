@@ -41,10 +41,13 @@ TODO: add brief description of each animation and configuration.
 
 ## TODOs:
 * more support for linear led strips
+* music syncing (w/microphone/line in/other modular interfaces)
+* dmx control
+* generalize existing draw_foo() functions to be even more modular
+* gif/video importing 
 * more animations (always)
 * easier hardware configuration in config.py
-* music syncing (w/microphone/line in/something else)
-* dmx control
+
 #### Menu system
 | Name | Code | Active | Function |
 | --- | :---: | :--- | ---|

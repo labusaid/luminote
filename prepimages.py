@@ -64,53 +64,7 @@ def convert_down_advance(imgpath):
     return output
 
 
-# TODO: finish this (currently just copy pasted from scanner plus some changes)
-# Creates barber pole/caution/candycane animation animation
-def draw_barber_pole(colorwheel=clr.wheel, width=3, direction=1, numcolors=1, angle=45, chevrons=False):
-    frames = 1 + numcolors * width
-
-    global curroffset, offesetinc
-    output = Image.new('RGB', (columns, rows * frames))
-
-    # color cycle
-    colorinc = 255 / frames
-    currcolor = 0
-
-    if direction == 1:
-        curroffset = 0
-        offesetinc = columns / frames
-    elif direction == 2:
-        curroffset = 0
-        offesetinc = rows / frames
-    elif direction == -1:
-        curroffset = columns
-        offesetinc = -(columns / frames)
-    elif direction == -2:
-        curroffset = rows
-        offesetinc = -(rows / frames)
-
-    # generate frames
-    for i in range(frames):
-
-        # image manipulation
-        clear_scratch()
-        if direction == 1:
-            draw.rectangle((curroffset - width / 2, 0, curroffset + width / 2, rows), fill=colorwheel(currcolor))
-        elif direction == 2:
-            draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
-        elif direction == -1:
-            draw.rectangle((curroffset + width / 2, 0, curroffset - width / 2, rows), fill=colorwheel(currcolor))
-        elif direction == -2:
-            draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
-
-        output.paste(image, (0, rows * i))  # write image to animation
-
-        # iterate
-        currcolor += colorinc
-        curroffset += offesetinc
-
-    # return animation
-    return output
+# TODO: draw_fire()
 
 
 # Draws text over a specified image, defaults to a new image with text starting in the top left
@@ -150,7 +104,7 @@ def draw_scroll_text(text, colorwheel=clr.wheel):
 
 
 # Creates scanner animation
-def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, direction=1, bounce=False):
+def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, direction=1, bounce=True):
     global curroffset, offesetinc
     output = Image.new('RGB', (columns, rows * frames))
 
@@ -169,6 +123,7 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, direction=1, bounce=F
         colorinc = 255 / frames
         currcolor = 0
 
+        # calculate offsets based on direction
         if direction == 1:
             curroffset = 0
             offesetinc = columns / frames
@@ -187,6 +142,7 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, direction=1, bounce=F
 
             # image manipulation
             clear_scratch()
+
             if direction == 1:
                 draw.rectangle((curroffset - width / 2, 0, curroffset + width / 2, rows), fill=colorwheel(currcolor))
             elif direction == 2:
@@ -268,6 +224,81 @@ def draw_spinning_line(frames=32, colorwheel=clr.wheel, width=1, ccw=False):
     return output
 
 
+# Draws a polygon based on given points that moves across the display
+def draw_moving_poly(points, colorwheel=clr.wheel, direction=1, numcolors=1, buffer=0):
+    # determine relevant outer bound of polygon
+    if direction > 0:
+        width = 0
+    elif columns > rows:
+        width = columns
+    else:
+        width = rows
+
+    for i in points:
+        if direction == 1 and i[0] > width:
+            width = i[0]
+        elif direction == 2 and i[1] > width:
+            width = i[1]
+        elif direction == -1 and i[0] < width:
+            width = i[0]
+        elif direction == -2 and i[1] < width:
+            width = i[1]
+
+    # calculate number of frames necessary for loop
+    frames = 1 + numcolors * width
+
+    global curroffset, offesetinc
+    output = Image.new('RGB', (columns, rows * frames))
+
+    # color cycle
+    colorinc = 255 / frames
+    currcolor = 0
+
+    # calculate offsets based on direction
+    if direction == 1:
+        curroffset = 0
+        offesetinc = columns / frames
+    elif direction == 2:
+        curroffset = 0
+        offesetinc = rows / frames
+    elif direction == -1:
+        curroffset = columns
+        offesetinc = -(columns / frames)
+    elif direction == -2:
+        curroffset = rows
+        offesetinc = -(rows / frames)
+
+    # generate frames
+    for i in range(frames):
+        # image manipulation
+        clear_scratch()
+        tuplepoints = tuple(tuple(x) for x in points)
+        draw.polygon(tuplepoints, fill=colorwheel(currcolor))
+
+        # for j in range(numcolors):
+
+        output.paste(image, (0, rows * i))  # write image to animation
+
+        # iterate
+        currcolor += colorinc
+        curroffset += offesetinc
+
+        for i in points:
+            if direction == 1:
+                i[0] += 1
+            elif direction == 2:
+                i[1] += 1
+            elif direction == -1:
+                i[0] -= 1
+            elif direction == -2:
+                i[1] -= 1
+
+    # return animation
+    return output
+
+
+# def draw_chevrons(colorwheel=clr.wheel, width=3, direction=1, numcolors=1, angle=45, chevrons=False):
+
 # TODO: add logic to reverse math when height is greater than width
 # Creates pin wheel animation
 def draw_pin_wheel(frames=32, colorwheel=clr.wheel, width=20, ccw=False):
@@ -343,9 +374,10 @@ def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
 # draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments
 
 # Default animations
+draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]]).save('img/candycane.png')
 # draw_scroll_text('   Luminote   ').save('img/text.png')
 # draw_scanner().save('img/scanner.png')
-draw_sparkle().save('img/sparkle.png')
+# draw_sparkle().save('img/sparkle.png')
 # draw_spinning_line().save('img/spinningline.png')
 # draw_pin_wheel().save('img/pinwheel.png')
 # draw_ripple().save('img/ripple.png')
