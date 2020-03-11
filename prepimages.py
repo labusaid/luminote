@@ -379,10 +379,12 @@ def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
 # draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments
 
 # Default animations
-draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]], direction=1).save('img/candycane.png')
-# draw_scroll_text('   Luminote   ').save('img/text.png')
-# draw_scanner().save('img/scanner.png')
-# draw_sparkle().save('img/sparkle.png')
-# draw_spinning_line().save('img/spinningline.png')
-# draw_pin_wheel().save('img/pinwheel.png')
-# draw_ripple().save('img/ripple.png')
+draw_scroll_text('   Luminote   ').save('img/text.png')
+draw_scanner().save('img/scanner.png')
+draw_sparkle().save('img/sparkle.png')
+draw_spinning_line().save('img/spinningline.png')
+draw_pin_wheel().save('img/pinwheel.png')
+draw_ripple().save('img/ripple.png')
+
+# WIP ignore for now
+# draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]], direction=1).save('img/candycane.png')

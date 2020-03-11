@@ -1,6 +1,6 @@
 # Luminote
 
-####Note:
+#### Note:
 This is still very much a work in progress, if you have feature requests or bug reports please feel free to share them on [github](https://github.com/labusaid/luminote).
 This project is originally designed to drive a matrix of ws2812 LEDs through a raspberry pi, but once the majority of features are impimented I plan on slowly increasing compatibility for different hardware setups and layouts.
 
