@@ -16,6 +16,7 @@
       <w>luminote</w>
       <w>machinestate</w>
       <w>matrixmap</w>
+      <w>numpolys</w>
       <w>offesetinc</w>
       <w>pixeled</w>
       <w>pixnum</w>
@@ -23,6 +24,7 @@
       <w>roulettewheel</w>
       <w>textheight</w>
       <w>textwidth</w>
+      <w>tuplepoints</w>
     </words>
   </dictionary>
 </component>

@@ -227,9 +227,6 @@ def draw_spinning_line(frames=32, colorwheel=clr.wheel, width=1, ccw=False):
 # Draws a polygon based on given points that moves across the display
 def draw_moving_poly(points, colorwheel=clr.wheel, direction=1, numcolors=1, buffer=0):
     # determine relevant outer bound of polygon
-    bound1 = 0
-    bound2 = 0
-
     # use x coords
     if direction == 1 or -1:
         bound1 = columns
@@ -244,12 +241,18 @@ def draw_moving_poly(points, colorwheel=clr.wheel, direction=1, numcolors=1, buf
         for i in points:
             if i[1] < bound1: bound1 = i[1]
             if i[1] > bound2: bound2 = i[1]
+    # calculate width
     width = bound2 - bound1
 
     # calculate number of frames necessary for loop
-    frames = 1 + numcolors * width
+    frames = numcolors * width
 
-    # calculate quantity of
+    # calculate quantity of polygons to draw per frame
+    if direction == 1 or -1:
+        numpolys = int(columns / width + 1)
+    # use y coords
+    else:
+        numpolys = int(rows / width + 1)
 
     # prep output image
     global curroffset, offesetinc
@@ -277,8 +280,22 @@ def draw_moving_poly(points, colorwheel=clr.wheel, direction=1, numcolors=1, buf
     for i in range(frames):
         # image manipulation
         clear_scratch()
-        tuplepoints = tuple(tuple(x) for x in points)
-        draw.polygon(tuplepoints, fill=colorwheel(currcolor))
+
+        # draw polygons
+        # TODO: calc range
+        patternoffset = -width
+        for j in range(numpolys):
+            if direction == 1:
+                pointstemp = [[x[0] + patternoffset, x[1]] for x in points]
+            elif direction == 2:
+                pointstemp = [[x[0], x[1] + patternoffset] for x in points]
+            elif direction == -1:
+                pointstemp = [[x[0] - patternoffset, x[1]] for x in points]
+            elif direction == -2:
+                pointstemp = [[x[0], x[1] - patternoffset] for x in points]
+            tuplepoints = tuple(tuple(x) for x in pointstemp)  # converts to tuple for passing into draw.polygon()
+            draw.polygon(tuplepoints, fill=colorwheel(currcolor))
+            patternoffset += width
 
         # for j in range(numcolors):
 
@@ -379,12 +396,13 @@ def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
 # draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments
 
 # Default animations
-draw_scroll_text('   Luminote   ').save('img/text.png')
-draw_scanner().save('img/scanner.png')
-draw_sparkle().save('img/sparkle.png')
-draw_spinning_line().save('img/spinningline.png')
-draw_pin_wheel().save('img/pinwheel.png')
-draw_ripple().save('img/ripple.png')
+# draw_scroll_text('   Luminote   ').save('img/text.png')
+# draw_scanner().save('img/scanner.png')
+# draw_sparkle().save('img/sparkle.png')
+# draw_spinning_line().save('img/spinningline.png')
+# draw_pin_wheel().save('img/pinwheel.png')
+# draw_ripple().save('img/ripple.png')
 
 # WIP ignore for now
-# draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]], direction=1).save('img/candycane.png')
+draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]], direction=1).save('img/candycane.png')
+# draw_moving_poly([[columns-0, 0], [columns-rows, 0], [columns-rows * 2, rows], [columns-rows, rows]], direction=-1).save('img/candycane.png')
