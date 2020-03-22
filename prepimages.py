@@ -1,4 +1,3 @@
-# TODO: merge with prepimages.py and increase modularity
 # Script used to prep images for use by animations.py when using an led matrix
 
 import random
@@ -64,7 +63,7 @@ def convert_down_advance(imgpath):
     return output
 
 
-# TODO: draw_fire()
+# TODO: draw_fire(), draw_checkers(), draw_strobe()
 
 
 # Draws text over a specified image, defaults to a new image with text starting in the top left
@@ -110,7 +109,6 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, direction=1, bounce=T
 
     # recursively call draws_scanner twice to generate each half of the output
     if bounce:
-        # TODO: create function in colorwheels.py that splits a color wheel and returns it as two new functions
         output.paste(
             draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, direction=direction),
             (0, 0))
@@ -173,7 +171,7 @@ def draw_sparkle(frames=32, colorwheel=clr.wheel, quantity=3):
     # generate frames
     for i in range(frames):
         clear_scratch()
-        for j in range(quantity):
+        for _ in range(quantity):
             x = random.randrange(rows)
             y = random.randrange(columns)
 
@@ -224,6 +222,7 @@ def draw_spinning_line(frames=32, colorwheel=clr.wheel, width=1, ccw=False):
     return output
 
 
+# TODO: add numcolors and buffer functionality
 # Draws a polygon based on given points that moves across the display
 def draw_moving_poly(points, colorwheel=clr.wheel, direction=1, numcolors=1, buffer=0):
     # determine relevant outer bound of polygon
@@ -282,9 +281,8 @@ def draw_moving_poly(points, colorwheel=clr.wheel, direction=1, numcolors=1, buf
         clear_scratch()
 
         # draw polygons
-        # TODO: calc range
         patternoffset = -width
-        for j in range(numpolys):
+        for _ in range(numpolys):
             if direction == 1:
                 pointstemp = [[x[0] + patternoffset, x[1]] for x in points]
             elif direction == 2:
@@ -318,8 +316,6 @@ def draw_moving_poly(points, colorwheel=clr.wheel, direction=1, numcolors=1, buf
     # return animation
     return output
 
-
-# def draw_chevrons(colorwheel=clr.wheel, width=3, direction=1, numcolors=1, angle=45, chevrons=False):
 
 # TODO: add logic to reverse math when height is greater than width
 # Creates pin wheel animation
@@ -357,7 +353,6 @@ def draw_pin_wheel(frames=32, colorwheel=clr.wheel, width=20, ccw=False):
 
 
 # Creates ripple animation
-# TODO: add outline option
 def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
     output = Image.new('RGB', (columns, rows * frames))
 
