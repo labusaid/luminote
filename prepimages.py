@@ -380,24 +380,24 @@ def draw_ripple(frames=32, colorwheel=clr.wheel, width=3):
     # return animation
     return output
 
+if __name__ == '__main__':
+    # Generating animations examples
+    # draw_spinning_line().save('img/spinningline.png') # basic usage
+    # draw_spinning_line(colorwheel=lambda a: (255,0,0)).save('img/spinningline.png') # lamda function for static color
+    # convert_right_advance(draw_spinning_line()).save('img/spinninglineexport.bmp') # example of use for exporting to other programs
+    # convert_down_advance('img/spinninglineexport.bmp').save('img/spinninglineimport.png') # example of use for importing from other programs
+    # draw_scroll_text('   Sample Text   ').save('img/text.png') # generated text animation
+    # draw_scanner(scanbouce=True).save('img/scanner.png') # example with arguments
+    # draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments
 
-# Generating animations examples
-# draw_spinning_line().save('img/spinningline.png') # basic usage
-# draw_spinning_line(colorwheel=lambda a: (255,0,0)).save('img/spinningline.png') # lamda function for static color
-# convert_right_advance(draw_spinning_line()).save('img/spinninglineexport.bmp') # example of use for exporting to other programs
-# convert_down_advance('img/spinninglineexport.bmp').save('img/spinninglineimport.png') # example of use for importing from other programs
-# draw_scroll_text('   Sample Text   ').save('img/text.png') # generated text animation
-# draw_scanner(scanbouce=True).save('img/scanner.png') # example with arguments
-# draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments
+    # Default animations
+    # draw_scroll_text('   Luminote   ').save('img/text.png')
+    # draw_scanner().save('img/scanner.png')
+    # draw_sparkle().save('img/sparkle.png')
+    # draw_spinning_line().save('img/spinningline.png')
+    # draw_pin_wheel().save('img/pinwheel.png')
+    # draw_ripple().save('img/ripple.png')
 
-# Default animations
-# draw_scroll_text('   Luminote   ').save('img/text.png')
-# draw_scanner().save('img/scanner.png')
-# draw_sparkle().save('img/sparkle.png')
-# draw_spinning_line().save('img/spinningline.png')
-# draw_pin_wheel().save('img/pinwheel.png')
-# draw_ripple().save('img/ripple.png')
-
-# WIP ignore for now
-draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]], direction=1).save('img/candycane.png')
-# draw_moving_poly([[columns-0, 0], [columns-rows, 0], [columns-rows * 2, rows], [columns-rows, rows]], direction=-1).save('img/candycane.png')
+    # WIP ignore for now
+    draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]], direction=1).save('img/candycane.png')
+    # draw_moving_poly([[columns-0, 0], [columns-rows, 0], [columns-rows * 2, rows], [columns-rows, rows]], direction=-1).save('img/candycane.png')
