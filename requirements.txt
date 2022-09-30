@@ -7,7 +7,7 @@ cffi==1.14.0
 colorzero==1.1
 decorator==4.4.1
 gpiozero==1.5.1
-joblib==0.14.1
+joblib==1.2.0
 librosa==0.7.2
 llvmlite==0.31.0
 numba==0.48.0
