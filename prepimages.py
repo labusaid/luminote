@@ -75,7 +75,12 @@ def draw_text(text, image=Image.new('RGB', (columns, rows)), location=(0, 0), fi
 
 
 def draw_scroll_text(text, colorwheel=clr.wheel):
-    textwidth, textheight = draw.textsize(text, font=font)
+    # Get the bounding box of the text
+    bbox = draw.textbbox((0, 0), text, font=font)
+
+    # Calculate text width and height
+    textwidth = bbox[2] - bbox[0]  # right - left
+    textheight = bbox[3] - bbox[1]  # bottom - top
 
     # center if text is less than width
     if textwidth <= columns:
@@ -110,10 +115,10 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, direction=1, bounce=T
     # recursively call draws_scanner twice to generate each half of the output
     if bounce:
         output.paste(
-            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, direction=direction),
+            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, direction=direction, bounce=False),
             (0, 0))
         output.paste(
-            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, direction=0 - direction),
+            draw_scanner(frames=int(frames / 2), colorwheel=colorwheel, width=width, direction=0 - direction, bounce=False),
             (0, frames * int(rows / 2)))
 
     else:
@@ -146,7 +151,7 @@ def draw_scanner(frames=32, colorwheel=clr.wheel, width=3, direction=1, bounce=T
             elif direction == 2:
                 draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
             elif direction == -1:
-                draw.rectangle((curroffset + width / 2, 0, curroffset - width / 2, rows), fill=colorwheel(currcolor))
+                draw.rectangle((curroffset - width / 2, 0, curroffset + width / 2, rows), fill=colorwheel(currcolor))
             elif direction == -2:
                 draw.rectangle((0, curroffset - width / 2, columns, curroffset + width / 2), fill=colorwheel(currcolor))
 
@@ -391,13 +396,13 @@ if __name__ == '__main__':
     # draw_pin_wheel(frames=64, colorwheel=clr.clubwheel, ).save('img/clubpinwheel.png') # another example with arguments
 
     # Default animations
-    # draw_scroll_text('   Luminote   ').save('img/text.png')
-    # draw_scanner().save('img/scanner.png')
-    # draw_sparkle().save('img/sparkle.png')
-    # draw_spinning_line().save('img/spinningline.png')
-    # draw_pin_wheel().save('img/pinwheel.png')
-    # draw_ripple().save('img/ripple.png')
+    draw_scroll_text('   Luminote   ').save('img/text.png')
+    draw_scanner().save('img/scanner.png')
+    draw_sparkle().save('img/sparkle.png')
+    draw_spinning_line().save('img/spinningline.png')
+    draw_pin_wheel().save('img/pinwheel.png')
+    draw_ripple().save('img/ripple.png')
 
     # WIP ignore for now
-    draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]], direction=1).save('img/candycane.png')
+    # draw_moving_poly([[0, 0], [rows, 0], [rows * 2, rows], [rows, rows]], direction=1).save('img/candycane.png')
     # draw_moving_poly([[columns-0, 0], [columns-rows, 0], [columns-rows * 2, rows], [columns-rows, rows]], direction=-1).save('img/candycane.png')
