@@ -19,11 +19,11 @@ sudo pip3 install -r requirements.txt
 python3 prepimages.py
 sudo python3 luminote.py
 ```
-This may take a few minutes so just be patient.
+This code is not well optimized and may take a few minutes to complete.
 
 ## Workflow
 Luminote is designed to be as modular as possible to ensure that a majority of the code is hardware agnostic and customization takes as little effort as possible.
-Animations are saved as .png files with as a sequence of frames representing the matrix appended vertically.
+Animations are saved as .png files as a sequence of frames representing the matrix appended vertically.
  
 #### Default Animations
 By default running prepimages.py will generate one of each of the animations with the default arguments and save it in /img/. For more customization options check out the commented out examples in prepimages.py
@@ -38,20 +38,11 @@ Examples can be seen in prepimages.py
 #### Prepping custom images
 TODO: add brief description of each animation and configuration.
 
-
 ## TODOs:
 * more support for linear led strips
-* music syncing (w/microphone/line in/other modular interfaces)
 * dmx control
-* generalize existing draw_foo() functions to be even more modular
 * gif/video importing 
 * more animations (always)
 * easier hardware configuration in config.py
 
-#### Menu system
-| Name | Code | Active | Function |
-| --- | :---: | :--- | ---|
-| Home | HOME | default state 
-| Settings | SETTNG | hold singleplayer button for 3 seconds | used to configure general settings
-| Cues | CUES | hold two player button for 3 seconds | used to map buttons to cues
-Menu system is still subject to change
+If you implement any of these feel free to create a PR!
