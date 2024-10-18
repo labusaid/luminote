@@ -1,6 +1,4 @@
 # Project exclude paths
 /venv/
-/img/*
-/music/
 /luminotepi
 /luminotepi.pub

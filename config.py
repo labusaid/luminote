@@ -1,7 +1,7 @@
 # General configuration shared globally
 
 # Grid layout
-# Currently it's reccomended to make the width (columns) to larger dimention as some functions are not fully aspect ratio agnostic yet
+# Currently it's recommended to make the width (columns) to larger dimension as some functions are not fully aspect ratio agnostic yet
 rows = 8
 columns = 32
 matrixmap = 'zigzag'  # use 'direct' for direct map
